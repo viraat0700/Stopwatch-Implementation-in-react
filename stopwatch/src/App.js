@@ -1,31 +1,49 @@
-import { useRef, useState } from "react";
+
+
+import React, { useState, useRef } from 'react';
+
 
 function App() {
-  const [time, setTime] = useState(null);
-  const [now, setNow] = useState(null);
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const timerRef = useRef(null);
 
-
-  const intervalRef = useRef(null);
-  const handleStart = () => {
-    setTime(Date.now());
-    setNow(Date.now());
-    intervalRef.current = setInterval(() => {
-      setTime(Date.now());
-    }, 10);
+  const startTimer = () => {
+    setIsRunning(true);
+    timerRef.current = setInterval(() => {
+      setTime(prevTime => prevTime + 1);
+    }, 1000);
   };
 
-  const handleStop = () => {
-    clearInterval(intervalRef.current);
+  const stopTimer = () => {
+    setIsRunning(false);
+    clearInterval(timerRef.current);
   };
 
-  let timePassed = (time - now)/1000;
+  const resetTimer = () => {
+    setTime(0);
+    clearInterval(timerRef.current);
+    setIsRunning(false);
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+    const seconds = (time % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  };
 
   return (
     <div className="App">
-      <h1>StopWatch</h1>
-      <h2>Stopwatch: {timePassed.toFixed(3)}</h2>
-      <button onClick={handleStart}>Start</button>
-      <button onClick={handleStop}>Stop</button>
+      <h1>Stopwatch</h1>
+      <div className="Time">{formatTime(time)}</div>
+      <div className="Buttons">
+        {!isRunning ? (
+          <button onClick={startTimer}>Start</button>
+        ) : (
+          <button onClick={stopTimer}>Stop</button>
+        )}
+        <button onClick={resetTimer}>Reset</button>
+      </div>
     </div>
   );
 }
