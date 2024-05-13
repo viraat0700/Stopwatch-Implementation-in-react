@@ -1,7 +1,4 @@
-
-
 import React, { useState, useRef } from 'react';
-
 
 function App() {
   const [time, setTime] = useState(0);
