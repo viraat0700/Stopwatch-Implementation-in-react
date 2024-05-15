@@ -32,7 +32,7 @@ function App() {
   return (
     <div className="App">
       <h1>Stopwatch</h1>
-      <div className="Time">Time:{formatTime(time)}</div>
+      <div className="Time">Time: {formatTime(time)}</div>
       <div className="Buttons">
         {!isRunning ? (
           <button onClick={startTimer}>Start</button>
